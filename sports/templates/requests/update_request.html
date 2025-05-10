@@ -1,0 +1,23 @@
+{% extends 'base.html' %}  {# Or your actual base template #}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Update Sponsorship Request</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label for="id_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+            {{ form.status }}
+            {% if form.status.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ form.status.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded">
+            Update
+        </button>
+    </form>
+</div>
+{% endblock %}

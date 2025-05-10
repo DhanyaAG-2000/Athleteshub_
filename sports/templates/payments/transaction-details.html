@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="background-color: #f3f4f6; padding: 2rem; min-height: 100vh; background-image: url('/static/images/pay.png'); background-size: cover; background-position: center;">
+
+    
+        <h2 style="text-align: center; margin-bottom: 2rem; color: white;">💳  <strong>Payment Details</strong></h2>
+    
+        {% if transactions %}
+            <!-- Flex container -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
+                {% for tx in transactions %}
+                    <!-- Individual card -->
+                    <div style="background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 300px; flex-shrink: 0;">
+                        <p><strong>Student:</strong> {{ tx.payment.student.first_name }} {{ tx.payment.student.last_name }}</p>
+                        <p><strong>Event:</strong> {{ tx.payment.event.title }}</p>
+                        <p><strong>Amount Paid:</strong> ₹{{ tx.amount }}</p>
+                        <p><strong>Status:</strong> 
+                            {% if tx.status == 'Success' %}
+                              <span style="color: green; font-weight: bold;">{{ tx.status }}</span>
+                            {% elif tx.status == 'Failed' %}
+                              <span style="color: red; font-weight: bold;">{{ tx.status }}</span>
+                            {% else %}
+                              <span style="color: orange; font-weight: bold;">{{ tx.status }}</span>
+                            {% endif %}
+                        </p>
+                        {% if tx.rzp_order_id %}
+                            <p><strong>Razorpay Order ID:</strong> {{ tx.rzp_order_id }}</p>
+                        {% endif %}
+                        {% if tx.rzp_payment_id %}
+                            <p><strong>Payment ID:</strong> {{ tx.rzp_payment_id }}</p>
+                        {% endif %}
+                        {% if tx.rzp_signature %}
+                            <p><strong>Signature:</strong> {{ tx.rzp_signature }}</p>
+                        {% endif %}
+                        {% if tx.transaction_at %}
+                            <p><strong>Transaction Time:</strong> {{ tx.transaction_at|date:"M d, Y h:i A" }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; color: white;">No transactions found.</p>
+        {% endif %}
+    </div>
+    
+{% endblock %}

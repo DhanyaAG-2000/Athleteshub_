@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+    <script>
+        var options = {
+            "key": "{{ client_id|escapejs }}",
+            "amount": "{{ amount|escapejs }}",
+            "currency": "INR",
+            "name": "SportsHub",
+            "description": "Payment for Sports Event Registration",
+            "order_id": "{{ order_id|escapejs }}",
+            "handler": function (response){
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = "{% url 'payment-verify' %}";
+
+                ['razorpay_order_id', 'razorpay_payment_id', 'razorpay_signature'].forEach(function(key) {
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = key;
+                    input.value = response[key];
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    </script>
+</body>
+</html>

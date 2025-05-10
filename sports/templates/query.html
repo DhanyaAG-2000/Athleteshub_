@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: linear-gradient(to right, #ecf0f1, #3498db); min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+    <div style="max-width: 500px; width: 90%; background-color: #ffffff; border-radius: 16px; border: 3px solid #2ecc71; box-shadow: 0 12px 24px rgba(0,0,0,0.1); padding: 40px; text-align: center; animation: bounceFadeIn 1s ease;">
+        
+        <img src="https://img.icons8.com/color/96/000000/checked.png" alt="Success" style="margin-bottom: 20px; height: 90px; animation: glow 2s infinite alternate;">
+        
+        <h2 style="color: #2ecc71; font-size: 2rem; margin-bottom: 10px;">Query Executed Successfully!</h2>
+        
+        <p style="font-size: 1.1rem; color: #34495e; margin-bottom: 20px;">Your query was successfully processed. Everything is on track!</p>
+
+        
+    </div>
+</div>
+
+<style>
+@keyframes bounceFadeIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(50px); }
+    60% { opacity: 1; transform: scale(1.05) translateY(-10px); }
+    100% { transform: scale(1) translateY(0); }
+}
+
+@keyframes glow {
+    from { filter: drop-shadow(0 0 5px #2ecc71); }
+    to { filter: drop-shadow(0 0 20px #2ecc71); }
+}
+</style>
+
+{% endblock %}

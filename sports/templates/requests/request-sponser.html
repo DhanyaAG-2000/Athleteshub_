@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin: 0; padding: 2rem; font-family: 'Poppins', sans-serif; background-image: url(/static/images/bg_3.jpg); background-size: cover; background-position: center; height: 100vh;">
+
+    <h2 style="text-align: center; color: #1f2937; font-size: 2rem; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 1px;">
+        <b>Sponsorship Requests</b>
+    </h2>
+
+    <form id="csrf-form">{% csrf_token %}</form> <!-- CSRF token for JS -->
+
+    <div style="overflow-x:auto;">
+        <table style="width: 100%; border-collapse: collapse; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <thead>
+                <tr style="background-color: #090b11; color: white; text-align: left; font-size: 1rem; border-bottom: 2px solid #ddd;">
+                    <th style="padding: 12px 15px;">Name</th>
+                    <th style="padding: 12px 15px;">Email</th>
+                    <th style="padding: 12px 15px;">Phone</th>
+                    <th style="padding: 12px 15px;">Institution</th>
+                    <th style="padding: 12px 15px;">University</th>
+                    <th style="padding: 12px 15px;">Requested At</th>
+                    <th style="padding: 12px 15px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in combined_data %}
+                    <tr style="background-color: #ffffff; transition: background-color 0.3s;">
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.first_name }} {{ item.last_name }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.email }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.phone }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.institution }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.university }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ item.created_at|date:"Y-m-d H:i" }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">
+                            <form method="post" action="{% url 'accept-request' request_id=item.id %}">
+                                {% csrf_token %}
+                                <select name="status" onchange="this.form.submit();"
+                                class="btn {% if item.status == 'Accepted' %}btn-success
+                                            {% elif item.status == 'Rejected' %}btn-danger
+                                            {% elif item.status == 'pending' %}btn-danger
+                                            {% else %}btn-warning{% endif %}">
+                                <option value="Pending" {% if item.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Accepted" {% if item.status == 'Accepted' %}selected{% endif %}>Accept</option>
+                                <option value="Rejected" {% if item.status == 'Rejected' %}selected{% endif %}>Reject</option>
+                            </select>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 20px; color: black;">No requests found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

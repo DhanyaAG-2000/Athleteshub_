@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Account Deactivation Notice</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <h2>Dear {{ user.first_name }} {{ user.last_name }},</h2>
+
+    <p>
+        We regret to inform you that your account on <strong>AthletesHub</strong> has been deactivated by the administrator.
+    </p>
+
+    <p>
+        If you believe this is a mistake or have any concerns, you can reply directly to this email to contact the admin:
+        <strong>{{ admin_email }}</strong>.
+    </p>
+
+    <p>
+        Best regards,<br>
+        <strong>AthletesHub Team</strong>
+    </p>
+</body>
+</html>

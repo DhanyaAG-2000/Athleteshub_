@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main style="background-color: #f4f4f5; padding: 3rem 1rem 4rem; min-height: 100vh; background-image: url('/static/images/bg_2.jpg'); background-size: cover; background-position: center;"">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; background-color: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 30px;">
+
+  
+        <!-- User Info Section -->
+        <div class="flex items-center space-x-6" style="margin-bottom: 30px; display: flex; align-items: center;">
+            <img src="{{ user.photo.url }}" alt="Student Photo" style="width: 300px; height: 300px; border-radius: 16px; border: 4px solid #3b82f6; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="padding: 50px;">
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: #1f2937; margin-bottom: 10px;">{{ user.first_name }} {{ user.last_name }}</h2>
+                <p style="font-size: 1rem; color: #6b7280; margin-bottom: 5px;">{{ user.email }}</p>
+                <p style="font-size: 1rem; color: #6b7280;">{{ user.contact_num }}</p>
+            </div>
+        </div>
+
+        <!-- User Details Sections -->
+        <div class="user-details" style="margin-top: 20px;">
+            <div class="detail" style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                <span style="font-size: 1.1rem; font-weight: 600; color: #4b5563;">Register Number:</span>
+                <span style="font-size: 1.1rem; color: #1f2937;">{{ user.reg_number }}</span>
+            </div>
+            <div class="detail" style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                <span style="font-size: 1.1rem; font-weight: 600; color: #4b5563;">Login Date:</span>
+                <span style="font-size: 1.1rem; color: #1f2937;">{{ user.join_date|date:"d-m-Y H:i:s" }}</span>
+            </div>
+            <div class="detail" style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                <span style="font-size: 1.1rem; font-weight: 600; color: #4b5563;">Last Login Date:</span>
+                <span style="font-size: 1.1rem; color: #1f2937;">{{ user.last_login|date:"d-m-Y H:i:s" }}</span>
+            </div>
+            <div class="detail" style="margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                <span style="font-size: 1.1rem; font-weight: 600; color: #4b5563;">Address:</span>
+                <span style="font-size: 1.1rem; color: #1f2937;">{{ user.house_name }}, {{ user.post_office }} P.O., Pincode: {{ user.pincode }}</span>
+            </div>
+        </div>
+   
+  <!-- Go Back Button -->
+  <div style="margin-bottom: 20px;">
+    <a href="javascript:history.back()" style="background-color: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.2s ease; display: inline-block;">
+        ← Go Back
+    </a>
+</div>
+
+    </div>
+</main>
+{%endblock%}

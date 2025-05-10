@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 30px auto; padding: 25px; background-color: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Submit Your Feedback</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Subject -->
+        <label for="id_subjects" style="display: block; margin-top: 15px; font-weight: 600; color: #555;">Subject</label>
+        <input type="text" name="subjects" id="id_subjects" required
+               style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+
+        <!-- Category -->
+        <label for="id_category" style="display: block; margin-top: 15px; font-weight: 600; color: #555;">Category</label>
+        <select name="category" id="id_category" required
+                style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+            <option value="">Select a category</option>
+            <option value="suggestion">Suggestion</option>
+            <option value="complaint">Complaint</option>
+            <option value="praise">Praise</option>
+            <option value="other">Other</option>
+        </select>
+
+        <!-- Message -->
+        <label for="id_message" style="display: block; margin-top: 15px; font-weight: 600; color: #555;">Message</label>
+        <textarea name="message" id="id_message" required
+                  style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; height: 120px; resize: vertical;"></textarea>
+
+        <!-- Rating and Usefulness -->
+        <div style="display: flex; justify-content: space-between; gap: 15px; margin-top: 15px;">
+            <div style="flex: 1;">
+                <label for="id_rating" style="font-weight: 600; color: #555;">Rating</label>
+                <select name="rating" id="id_rating"
+                        style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+                    <option value="">Select</option>
+                    {% for i in "12345" %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="flex: 1;">
+                <label for="id_usefulness_rating" style="font-weight: 600; color: #555;">Usefulness</label>
+                <select name="usefulness_rating" id="id_usefulness_rating"
+                        style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+                    <option value="">Select</option>
+                    {% for i in "12345" %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- Screenshot -->
+        <label for="id_screenshot" style="display: block; margin-top: 15px; font-weight: 600; color: #555;">Screenshot (optional)</label>
+        <input type="file" name="screenshot" id="id_screenshot" accept="image/*"
+               style="width: 100%; padding: 10px; margin-top: 5px; font-size: 14px;">
+
+        <!-- Submit Button -->
+        <button type="submit"
+                style="display: block; width: 100%; padding: 12px; margin-top: 25px; background-color: #0066cc; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">
+            Submit Feedback
+        </button>
+    </form>
+</div>
+{% endblock %}

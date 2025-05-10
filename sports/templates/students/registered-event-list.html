@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<form method="get" style="margin-bottom: 20px; text-align: center;">
+    <input type="text" name="q" placeholder="Search by name, reg no, event, etc." value="{{ query }}" style="padding: 8px; width: 300px; border-radius: 5px; border: 1px solid #ccc; margin-right: 10px;">
+    
+    <input type="date" name="date" value="{{ date_filter }}" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; margin-right: 10px;">
+    
+    <button type="submit" style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">Search</button>
+    
+    <a href="{% url 'registred-event-list' %}" style="margin-left: 10px; padding: 8px 16px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px;">Reset</a>
+</form>
+
+<div style="margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-image: url(/static/images/bg_1.jpg); background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+    <div style="background-color: #ffffff; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 1500px; height: 650px; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+        
+        <h2 style="text-align: center; color: #333; font-size: 32px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;">
+           Student Registered for  Events
+        </h2>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background-color: #f3f3f3; color: #333; text-align: center;" >
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Date</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Event</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Register No.</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Name</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Category</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Fee</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #ddd;">Institution</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg in registrations %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px; text-align: center;">{{ reg.created_at|date:"M d, Y" }}</td>
+                    <td style="padding: 10px; text-align: center;">{{ reg.title.title }}</td>
+                    <td style="padding: 10px; text-align: center;">{{ reg.reg_number }}</td>
+                    <td style="padding: 10px; text-align: center;">{{ reg.first_name }} {{ reg.last_name }}</td>
+                    <td style="padding: 10px; text-align: center;">{{ reg.category }}</td>
+                    <td style="padding: 10px; text-align: center;">₹{{ reg.registration_fee }}</td>
+                    <td style="padding: 10px; text-align: center; ">{{ reg.institution }}</td>
+                    
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px; color: #888;">No events registered yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if messages %}
+        <ul>
+            <!-- You can display messages here if needed -->
+        </ul>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

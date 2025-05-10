@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main style="background-color: #f3f4f6; padding: 2rem; min-height: 100vh; background-image: url('/static/images/podium.png'); background-size: cover; background-position: center;">
+    <h1 style="text-align: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem; color:white; letter-spacing: 1px;">📅 Sports Events</h1>
+
+    <!-- Search Box -->
+    <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+        <div style="position: relative; width: 100%; max-width: 500px;">
+            <form action="" method="get">
+                <div style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
+                    <svg style="width: 18px; height: 18px; color: #6b7280;" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search Events"
+                    value="{{ search_query }}"
+                    style="width: 100%; padding: 12px 12px 12px 38px; font-size: 14px; color: #374151; background-color: #f9fafb; border: 1px solid #d1d5db; border-radius: 10px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);"
+                    onfocus="this.style.boxShadow='0 0 10px rgba(29, 78, 216, 0.5)';"
+                    onblur="this.style.boxShadow='inset 0 1px 3px rgba(0, 0, 0, 0.1)';"
+                />
+            </form>
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div style="overflow-x:auto; background-color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);">
+        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+            <thead style="background-color: #e5e7eb;">
+                <tr>
+                    <th style="padding: 14px; width: 150px; text-align: center; font-weight: 700; color: #374151;">Image</th>
+                    <th style="padding: 14px; width: 120px; text-align: center; font-weight: 700; color: #374151;">Event Level</th>
+                    <th style="padding: 14px; width: 120px; text-align: center; font-weight: 700; color: #374151;">Sport Code</th>
+                    <th style="padding: 14px; width: 150px; text-align: center; font-weight: 700; color: #374151;">Event Name</th> 
+                    <th style="padding: 14px; width: 250px; text-align: center; font-weight: 700; color: #374151;">Description</th>
+                    <th style="padding: 14px; width: 120px; text-align: center; font-weight: 700; color: #374151;">Districts</th>
+                    <th style="padding: 14px; width: 120px; text-align: center; font-weight: 700; color: #374151;">Location</th>
+                    <th style="padding: 14px; width: 120px; text-align: center; font-weight: 700; color: #374151;">Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr style="height: 200px; text-align: center; vertical-align: top; transition: background-color 0.3s, transform 0.2s;" onmouseout="this.style.backgroundColor=''; this.style.transform='scale(1)'" onmouseover="this.style.backgroundColor='#f3f4f6'; this.style.transform='scale(1.02)'">
+                    <td style="padding: 10px;">
+                        {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="Event Image" style="height: 100px; width: 100px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        {% else %}
+                        <span style="color: #9ca3af;">No Image</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.title }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.reg_number }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.get_sport_type_display }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word; text-align: left;">{{ event.description }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.get_district_display }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.venue }}</td>
+                    <td style="padding: 10px; color: #4b5563; word-wrap: break-word;">{{ event.date }}<br>{{ event.time }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" style="padding: 20px; text-align: center; color: #9ca3af;">No sports events available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{% endblock %}

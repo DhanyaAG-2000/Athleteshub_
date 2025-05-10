@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; background-image: url('/static/images/request.jpg'); background-size: cover; background-position: center; padding: 30px 0;">
+  <div style="padding: 30px; max-width: 1200px; margin: auto; background: white; border-radius: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+  
+      <h2 style="text-align: center; font-size: 28px; margin-bottom: 20px;">Assign Winners</h2>
+  
+      <!-- Event Selection -->
+      <form method="get" style="text-align: center; margin-bottom: 30px;">
+          <label for="event" style="font-size: 16px; margin-right: 10px; color: black;">Select Event:</label>
+          <select name="event" id="event" required style="padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc;">
+              <option value="">-- Choose an Event --</option>
+              {% for event in events %}
+                  <option value="{{ event.id }}" {% if selected_event == event.id %}selected{% endif %}>{{ event.title }}</option>
+              {% endfor %}
+          </select>
+          <button type="submit" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; margin-left: 10px;">View Participants</button>
+      </form>
+  
+      {% if participants %}
+      <!-- Winner Assignment -->
+      <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="event" value="{{ selected_event }}">
+          <table style="width: 100%; border-collapse: collapse; text-align: center;">
+              <thead>
+                  <tr style="background-color: #f7f7f7;">
+                      <th style="padding: 10px; border-bottom: 1px solid #ccc;">Reg. No</th>
+                      <th style="padding: 10px; border-bottom: 1px solid #ccc;">Name</th>
+                      <th style="padding: 10px; border-bottom: 1px solid #ccc;">Category</th>
+                      <th style="padding: 10px; border-bottom: 1px solid #ccc;">Institution</th>
+                      <th style="padding: 10px; border-bottom: 1px solid #ccc;">Position</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for participant in participants %}
+                  <tr>
+                      <td style="padding: 10px;">{{ participant.reg_number }}</td>
+                      <td style="padding: 10px;">{{ participant.first_name }} {{ participant.last_name }}</td>
+                      <td style="padding: 10px;">{{ participant.category }}</td>
+                      <td style="padding: 10px;">{{ participant.institution }}</td>
+                      <td style="padding: 10px;">
+                          <input type="hidden" name="reg_number[]" value="{{ participant.reg_number }}">
+                          <select name="winner_position[]" style="padding: 6px; border-radius: 5px;">
+                              <option value="">-- None --</option>
+                              <option value="1st">1st</option>
+                              <option value="2nd">2nd</option>
+                              <option value="3rd">3rd</option>
+                          </select>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <div style="text-align: center; margin-top: 30px;">
+              <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px;">Save Winners</button>
+          </div>
+      </form>
+      {% endif %}
+  
+      {% if messages %}
+      <ul style="margin-top: 20px;">
+          {% for message in messages %}
+          <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}; text-align: center;">
+              {{ message }}
+          </li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}

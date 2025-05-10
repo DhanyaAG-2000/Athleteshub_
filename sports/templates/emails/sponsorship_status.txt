@@ -1,0 +1,12 @@
+Dear {{ student_name }},
+
+Your sponsorship request has been {{ status }}.
+
+{% if sponsor_message %}
+Message from {{ sponsor_name }}:
+"{{ sponsor_message }}"
+{% endif %}
+
+Thank you for using our platform!
+
+- Sports Sponsorship Team

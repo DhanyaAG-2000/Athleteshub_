@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div style="min-height: 100vh; background-image: url('/static/images/bg_2.jpg'); background-size: cover; background-position: center;">
+    <div style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.85)); padding-top: 50px; padding-bottom: 180px;">
+
+
+        <div class="container">
+
+            <!-- Profile Icon with User Image (Centered Top) -->
+<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 50px; position: relative;">
+    <div id="profile-container" style="position: relative;">
+        <!-- Profile Image as Clickable -->
+        <div id="profile-trigger" style="cursor: pointer;">
+            {% if user_details.photo %}
+                <img src="{{ user_details.photo.url }}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            {% else %}
+                <i class="fas fa-user-circle" style="font-size: 100px; color: #555;"></i>
+            {% endif %}
+        </div>
+
+        <!-- Dropdown Info -->
+        <div id="user-info" style="display: none; background-color: #fff; color: #000; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: absolute; top: 110%; left: 50%; transform: translateX(-50%); z-index: 10; width: 300px;">
+            <p><strong>Name:</strong> {{ user_details.first_name }} {{ user_details.last_name }}</p>
+            <p><strong>Email:</strong> {{ user_details.email }}</p>
+            <p><strong>Contact:</strong> {{ user_details.contact_num }}</p>
+            <a href="{% url 'user-update'%}"
+            style="display: flex; align-items: center; gap: 6px; background-color: #0ea5e9; color: white; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; box-shadow: 0 4px 8px rgba(14,165,233,0.3); border: 1px solid #0284c7; transition: 0.3s ease;"
+            onmouseover="this.style.backgroundColor='#0284c7'; this.style.transform='scale(1.05)'"
+            onmouseout="this.style.backgroundColor='#0ea5e9'; this.style.transform='scale(1)'">
+            Edit Profile
+         </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Toggle dropdown on image click
+document.addEventListener("DOMContentLoaded", function () {
+    const trigger = document.getElementById("profile-trigger");
+    const infoBox = document.getElementById("user-info");
+
+    trigger.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        infoBox.style.display = (infoBox.style.display === "block") ? "none" : "block";
+    });
+
+    // Hide when clicking outside
+    document.addEventListener("click", function (e) {
+        if (!document.getElementById("profile-container").contains(e.target)) {
+            infoBox.style.display = "none";
+        }
+    });
+});
+</script>
+
+            <h2 style="text-align: center; color: white; font-size: 3rem; font-weight: bold; margin-bottom: 10px;">Admin Dashboard</h2>
+            <p style="text-align: center; color: #ccc; margin-bottom: 50px;">Manage all your platform operations with ease</p>
+
+            <div style="display: flex; justify-content: space-between; gap: 30px; flex-wrap: nowrap; width: 100%; overflow-x: auto;">
+
+                <!-- Manage Users -->
+                <div style="width: 320px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 40px 20px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(0,0,0,0.3); transition: 0.4s;" 
+                     onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 0 30px rgba(255,255,255,0.4)'" 
+                     onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 25px rgba(0,0,0,0.3)'">
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 50%; display: inline-block; transition: 0.3s;">
+                        <i class="fas fa-users" style="font-size: 3rem; color: #0dcaf0;"></i>
+                    </div>
+                    <h5 style="color: white; margin-top: 20px; font-weight: 600;">Manage Users</h5>
+                    <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">View, edit and delete user accounts.</p>
+                    <a href="{% url 'user-management' %}" 
+                       style="padding: 10px 25px; border: 2px solid white; border-radius: 30px; font-weight: bold; color: white; text-decoration: none; display: inline-block; transition: 0.3s;"
+                       onmouseover="this.style.backgroundColor='white'; this.style.color='black'"
+                       onmouseout="this.style.backgroundColor='transparent'; this.style.color='white'">
+                      Manage
+                    </a>
+                </div>
+
+           
+
+
+                  <!-- Manage Events-->
+                  <div style="width: 320px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 40px 20px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(0,0,0,0.3); transition: 0.4s;"
+                  onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 0 30px rgba(255,255,255,0.4)'"
+                  onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 25px rgba(0,0,0,0.3)'">
+                 
+                 <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 50%; display: inline-block;">
+                     <i class="fas fa-calendar-alt" style="font-size: 3rem; color: #ffc107;"></i>
+                 </div>
+             
+                 <h5 style="color: white; margin-top: 20px; font-weight: 600;">Events</h5>
+                 <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">Manage and view all event activities.</p>
+             
+                 <a href="{% url 'compaining' %}" 
+                    style="padding: 10px 25px; border: 2px solid white; border-radius: 30px; font-weight: bold; color: white; text-decoration: none; display: inline-block; transition: 0.3s;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'"
+                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='white'">
+                   View
+                 </a>
+             </div>
+             
+
+<!-- Manage Sponsors -->
+<div style="width: 320px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 40px 20px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(0,0,0,0.3); transition: 0.4s;"
+onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 0 30px rgba(255,255,255,0.4)'"
+onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 25px rgba(0,0,0,0.3)'">
+<div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 50%; display: inline-block;">
+    <i class="fas fa-handshake" style="font-size: 3rem; color: #fd7e14;"></i>
+</div>
+<h5 style="color: white; margin-top: 20px; font-weight: 600;">View Sponsors</h5>
+<p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">View Sponsers Activities.</p>
+<a href="{%url 'admin-request-view'%}" 
+
+   style="padding: 10px 25px; border: 2px solid white; border-radius: 30px; font-weight: bold; color: white; text-decoration: none; display: inline-block; transition: 0.3s;"
+   onmouseover="this.style.backgroundColor='white'; this.style.color='black'"
+   onmouseout="this.style.backgroundColor='transparent'; this.style.color='white'">
+   Sponsor
+</a>
+</div>
+
+
+
+
+                <!-- User Complaints -->
+                <div style="width: 320px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 40px 20px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(0,0,0,0.3); transition: 0.4s;" 
+                onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 0 30px rgba(255,255,255,0.4)'" 
+                onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 25px rgba(0,0,0,0.3)'">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 50%; display: inline-block;">
+                   <i class="fas fa-comments" style="font-size: 3rem; color: #ffc107;"></i>
+                </div>
+                <h5 style="color: white; margin-top: 20px; font-weight: 600;">User's FeedBack</h5>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 15px;">Review and resolve user concerns.</p>
+                <a href="{%url 'feedback-list'%}" 
+                  style="padding: 10px 25px; border: 2px solid white; border-radius: 30px; font-weight: bold; color: white; background-color: transparent; text-decoration: none; transition: 0.3s;"
+                  onmouseover="this.style.backgroundColor='white'; this.style.color='black'"
+                  onmouseout="this.style.backgroundColor='transparent'; this.style.color='white'">
+                  Feedback
+                </a>
+                </div>
+
+
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<!-- JS -->
+<script>
+    document.getElementById('userComplaints').addEventListener('click', function () {
+        alert("Users Complaints clicked! Add redirection here.");
+    });
+</script>
+{% endblock %}
+

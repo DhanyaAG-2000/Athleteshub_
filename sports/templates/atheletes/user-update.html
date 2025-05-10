@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div>
+    <main class="h-screen flex items-center justify-center">
+        <form action="" method="post" enctype="multipart/form-data" class="px-4 pb-5 pt-5 px-4" style="width: 150%; background-image: url(/static/images/bg_3.jpg);"> 
+            {% csrf_token %}
+
+            <div class="flex items-center gap-4 w-full mb-4">
+                <h1 class="text-2xl font-bold text-black flex-grow">Updation Form</h1>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-center" style="align-items: flex-end;">
+                        <span class="text-black">User Type</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.rolechoice }}
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-center" style="align-items: flex-end;">
+                        <span class="text-black">First Name</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.first_name }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Last Name</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.last_name }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Photo</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.photo }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Email</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <span class="text-xs text-red-600 dark:text-red-400">
+                            {{ form.email.errors }}
+                        </span>
+                        {% endif %}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Contact Number</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.contact_num }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">House Name</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.house_name }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Post Office</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.post_office }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">District</span> <span class="text-red-600" style="color: red;">*</span>
+                        {{ form.district }}
+                    </label>
+                </div>
+    
+                <div>
+                    <label class="block text-sm text-center">
+                        <span class="text-black">Pincode</span><span class="text-red-600" style="color: red;">*</span>
+                        {{ form.pincode }}
+                        {% if form.pincode.errors %}
+                        <span class="text-xs text-red-600 dark:text-red-400">
+                            {{ form.pincode.errors }}
+                        </span>
+                        {% endif %}
+                    </label>
+                </div>
+
+                <div>
+                    <button class="btn btn-danger">
+                        Update
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25%;"></div>
+        </form>
+    </main>
+</div>
+
+{% endblock %}

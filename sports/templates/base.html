@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Web Application for Athletes &mdash; Website by Colorlib</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
+  <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <style>
+    /* Navbar Background Image */
+    .site-navbar {
+      background-image: url("{% static 'images/navbar-bg.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <!-- Navbar with Background Image -->
+    <header class="site-navbar py-4" role="banner">
+     
+      
+        <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+      
+         
+            <h1 class="sitename">Sports</h1>
+          
+      
+          <nav class="site-navigation position-relative" role="navigation">
+            <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-flex">
+              <li class="active"><a href="" class="nav-link">Home</a></li>
+              <li><a href="{% url 'event-list' %}" class="nav-link">Events</a></li>
+              <li><a href="{% url 'sponsor-list' %}" class="nav-link">Sponsers</a></li>
+              <li><a href="{% url 'winners-list' %}" class="nav-link">Winners</a></li>
+              <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+      
+              {%if user.is_authenticated%}
+                <li><a href="{% url 'dashboard' %}" class="nav-link">Log out</a></li>
+              {%endif%}
+            </ul>
+          </nav>
+      
+        
+          
+      
+        </div>
+    
+        
+      
+
+
+    </header>
+    
+
+    <div><br><br><br></div>
+
+
+
+
+    {% block content %}
+    {% endblock %}
+
+
+    
+
+    <footer class="footer-section">
+      <div class="container">
+        <div class="row">
+         
+          
+        
+          
+        
+          
+         
+          
+        </div>
+
+        <div class="row text-center">
+          <div class="col-md-12">
+            <div class="pt-5">
+              <p>
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> 
+                All rights reserved | This template is made  by  crmtia2025@gmail.com<i class="icon-heart" aria-hidden="true"></i> 
+               
+                
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  
+  <!-- Scripts -->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery-ui.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+  <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+  <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'js/aos.js' %}"></script>
+  <script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+  <script src="{% static 'js/jquery.sticky.js' %}"></script>
+  <script src="{% static 'js/jquery.mb.YTPlayer.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

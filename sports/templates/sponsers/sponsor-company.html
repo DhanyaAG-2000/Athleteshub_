@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-image: url('/static/images/company.jpg'); background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+    
+    <div class="container mt-4" style="background-color: #ffffff; padding: 40px 50px; border-radius: 20px; max-width: 900px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.2); overflow-y: auto; max-height: 95vh;">
+    
+        <h2 style="text-align: center; color: #333; font-size: 28px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;">
+            <b>Sponsor's Registration</b>
+        </h2>
+    
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_company_name" style="font-size: 14px; color: #333;">Company Name <span style="color: red;">*</span></label>
+                {{ form.company_name }}
+                {% if form.company_name.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.company_name.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label for="id_company_email" style="font-size: 14px; color: #333;">Company Email <span style="color: red;">*</span></label>
+                {{ form.company_email }}
+                {% if form.company_email.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.company_email.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_company_phone" style="font-size: 14px; color: #333;">Company Phone</label>
+                {{ form.company_phone }}
+                {% if form.company_phone.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.company_phone.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_company_address" style="font-size: 14px; color: #333;">Company Address</label>
+                {{ form.company_address }}
+                {% if form.company_address.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.company_address.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_location" style="font-size: 14px; color: #333;">Location</label>
+                {{ form.location }}
+                {% if form.location.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.location.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_website" style="font-size: 14px; color: #333;">Website</label>
+                {{ form.website }}
+                {% if form.website.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.website.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_logo" style="font-size: 14px; color: #333;">Company Logo</label>
+                {{ form.logo }}
+                {% if form.logo.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.logo.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="id_description" style="font-size: 14px; color: #333;">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <p style="color: red; font-size: 12px; margin-top: 5px;">{{ form.description.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 30px; text-align: center;">
+                <button type="submit" style="margin-top: 20px; background: linear-gradient(to right, #00b09b, #96c93d); border: none; padding: 15px 30px; font-size: 16px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer; transition: 0.3s;">
+                    Submit Registration
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

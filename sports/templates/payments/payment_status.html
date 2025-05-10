@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status</title>
+</head>
+<body>
+    <h2>Payment Status</h2>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <h3>Payment for Event: {{ event }}</h3>
+        <p>Amount Paid: ₹{{ amount }}</p>
+        <p>Status: {{ status }}</p>
+
+        {% if status == "Success" %}
+            <p>Thank you! Your payment was successful.</p>
+        {% elif status == "Failed" %}
+            <p>Sorry! Your payment failed. Please try again.</p>
+        {% else %}
+            <p>Your payment is still pending. Please wait for confirmation.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

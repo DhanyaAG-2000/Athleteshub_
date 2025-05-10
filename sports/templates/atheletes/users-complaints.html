@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="padding: 50px; min-height: 100vh; background-color: #f4f4f4;">
+    <h2 style="text-align: center; margin-bottom: 30px; color: black;">User Complaints</h2>
+
+    {% if complaints %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            {% for complaint in complaints %}
+                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                    <h4 style="color: #333;">{{ complaint.user.username }} ({{ complaint.user.email }})</h4>
+                    <p style="margin-top: 10px; color: #555;">{{ complaint.message }}</p>
+                    <p style="font-size: 0.9rem; color: gray; margin-top: 10px;">Date: {{ complaint.created_at|date:"M d, Y H:i" }}</p>
+
+                    {% if complaint.status == 'pending' %}
+                        <p style="margin-top: 10px; color: orange;"><strong>Status:</strong> Pending</p>
+                    {% else %}
+                        <p style="margin-top: 10px; color: green;"><strong>Status:</strong> Resolved</p>
+                    {% endif %}
+
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        {% if complaint.status == 'pending' %}
+                            <a href="{% url 'resolve-complaint' complaint.id %}" 
+                               style="padding: 8px 16px; background-color: #28a745; color: white; border-radius: 5px; text-decoration: none;">
+                               Mark as Resolved
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'delete-complaint' complaint.id %}" 
+                           style="padding: 8px 16px; background-color: #dc3545; color: white; border-radius: 5px; text-decoration: none;">
+                           Delete
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align: center; font-size: 1.2rem; color: gray;">No complaints found.</p>
+    {% endif %}
+</div>
+{% endblock %}

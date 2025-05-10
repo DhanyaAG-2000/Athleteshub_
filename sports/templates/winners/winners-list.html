@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; background-image: url('/static/images/winners.png'); background-size: cover; background-position: center; padding: 30px 0;">
+    <div style="padding: 30px; max-width: 1200px; margin: auto; background: black; border-radius: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+        <h2 style="text-align: center; color: white; margin-bottom: 40px;">🏆 Event Winners</h2>
+    
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; max-width: 1000px; margin: 0 auto; background-color: rgba(255,255,255,0.05); border-collapse: collapse; color: white; text-align: left;">
+                <thead>
+                    <tr style="background-color: rgba(0, 0, 0, 0.2);">
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">Name</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">Event</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">Category</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">Position</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">Institution</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #555;">University</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for winner in winners %}
+                    <tr style="border-bottom: 1px solid #444;">
+                        <td style="padding: 1rem;">{{ winner.first_name }} {{ winner.last_name }}</td>
+                        <td style="padding: 1rem;">{{ winner.registered_event.title }}</td>
+                        <td style="padding: 1rem;">{{ winner.category }}</td>
+                        <td style="padding: 1rem;">
+                            {% if winner.position == '1st' %}
+                                🥇 First
+                            {% elif winner.position == '2nd' %}
+                                🥈 Second
+                            {% elif winner.position == '3rd' %}
+                                🥉 Third
+                            {% else %}
+                                {{ winner.position }}
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem;">{{ winner.institution }}</td>
+                        <td style="padding: 1rem;">{{ winner.university }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="padding: 1rem; text-align: center;">No winners announced yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

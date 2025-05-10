@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin: 0; padding: 2rem; font-family: 'Poppins', sans-serif; background-image: url('/static/images/request.jpg'); background-size: cover; background-position: center; height: 100vh;">
+
+    <h2 style="text-align: center; color: #ffffff; font-size: 2.5rem; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 1px;">
+        <b>Students and Sponsors </b></h2>
+
+    <div style="overflow-x:auto;">
+        <table style="width: 100%; border-collapse: collapse; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); background-color: white;">
+            <thead>
+                <tr style="background-color: #ecf0f1; color: #34495e; text-align: left; font-size: 1rem; border-bottom: 2px solid #ddd;">
+                    <th style="padding: 12px 15px;">Student Name</th>
+                    <th style="padding: 12px 15px;">Student Contact</th>
+                    <th style="padding: 12px 15px;">Sponsor Name</th>
+                    <th style="padding: 12px 15px;">Company</th>
+                    <th style="padding: 12px 15px;">Sponsor Contact</th>
+                    <th style="padding: 12px 15px;">Current Status</th>
+                    <th style="padding: 12px 15px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                    <tr style="background-color: #ffffff; transition: background-color 0.3s;">
+                        <td style="padding: 12px 15px; color: #090b11">{{ request.student.first_name }} {{ request.student.last_name }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ request.student.email }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ request.sponsor.sponsor.first_name }} {{ request.sponsor.sponsor.last_name }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">{{ request.sponsor.company_name }}</td>
+                        <td style="padding: 12px 15px; color: #090b11">
+                            <strong>Email:</strong> {{ request.sponsor.company_email }}<br>
+                            {% if request.sponsor.company_phone %}
+                                <strong>Phone:</strong> {{ request.sponsor.company_phone }}
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 15px; color: #090b11">
+                            <strong>{{ request.status }}</strong>
+                        </td>
+                        <td style="padding: 12px 15px; text-align: center;">
+                           
+                          <form method="post" action="{% url 'reject-request' request_id=request.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="response_message" value="Rejected by sponsor.">
+                            <button type="submit" style="background-color: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                Reject
+                            </button>
+                        </form>
+                        
+                        
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 20px; color: black;">No requests found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-image: url(/static/images/podium.png); background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+    <div style="padding: 40px 50px; border-radius: 20px; max-width: 900px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.2); overflow-y: auto; max-height: 95vh;">
+        
+        <!-- ERROR MESSAGE BLOCK -->
+        {% if error %}
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 12px; border-radius: 8px; background-color: #ffe0e0; color: #a94442; font-weight: bold; text-align: center;">
+                    {{ error }}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Registration Form -->
+        <form action="" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 30px;">
+            {% csrf_token %}
+
+            <!-- PERSONAL DETAILS SECTION -->
+            <fieldset style="border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+                <legend style="font-weight: bold; font-size: 16px;">👤 Personal Details</legend>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    {% for field in form.visible_fields %}
+                        {% if field.name in 'first_name last_name dob gender email phone address pincode student_district' %}
+                        <div style="flex: 1 1 45%; display: flex; flex-direction: column;">
+                            <label for="{{ field.id_for_label }}" style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: white;">
+                                {{ field.label }} {% if field.field.required %}<span style="color: red;">*</span>{% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small style="color: #000000; font-size: 12px;">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <span style="color: red; font-size: 12px; margin-top: 4px;">{{ field.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            <!-- EDUCATIONAL DETAILS SECTION -->
+            <fieldset style="border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+                <legend style="font-weight: bold; font-size: 16px;">🏫 Educational Details</legend>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    {% for field in form.visible_fields %}
+                        {% if field.name in 'institution institution_districts university reg_number' %}
+                        <div style="flex: 1 1 45%; display: flex; flex-direction: column;">
+                            <label for="{{ field.id_for_label }}" style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color:white;">
+                                {{ field.label }} {% if field.field.required %}<span style="color: red;">*</span>{% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span style="color: red; font-size: 12px; margin-top: 4px;">{{ field.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            <!-- ID PROOF & EVENT SECTION -->
+            <fieldset style="border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+                <legend style="font-weight: bold; font-size: 16px;">📎 Document & Event</legend>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    {% for field in form.visible_fields %}
+                        {% if field.name in 'title Id_proof' %}
+                        <div style="flex: 1 1 45%; display: flex; flex-direction: column;">
+                            <label for="{{ field.id_for_label }}" style="font-weight: bold; font-size: 14px; margin-bottom: 6px; color: white;">
+                                {{ field.label }} {% if field.field.required %}<span style="color: red;">*</span>{% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span style="color: red; font-size: 12px; margin-top: 4px;">{{ field.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            <!-- SUBMIT BUTTON -->
+            <div style="text-align: center;">
+                <button type="submit" style="margin-top: 20px; background: linear-gradient(to right, #00b09b, #96c93d); border: none; padding: 15px 30px; font-size: 16px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer;">
+                    Submit Registration
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

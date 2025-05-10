@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<div style="margin: 0; padding: 2rem; font-family: 'Poppins', sans-serif; background-image: url('/static/images/company.jpg'); background-size: cover; background-position: center; min-height: 100vh;">
+
+    <!-- Page Heading -->
+    <h2 style="text-align: center; color: #1f2937; font-size: 2rem; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 1px;">
+        <b>Available Sponsors</b>
+    </h2>
+
+    <!-- Sponsor Cards -->
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+        {% for sponsor in sponsors %}
+        <div style="width: 320px; background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            
+            {% if sponsor.logo %}
+            <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.company_name }}" style="width: 100%; height: 180px; object-fit: contain; background-color: #f9fafb;">
+            {% endif %}
+
+            <div style="padding: 16px;">
+                <h3 style="font-size: 1.25rem; color: #111827; font-weight: 700; margin-bottom: 0.5rem;">{{ sponsor.company_name }}</h3>
+                <p style="font-size: 0.9rem; color: #374151;"><strong>Email:</strong> {{ sponsor.company_email }}</p>
+                
+                {% if sponsor.company_phone %}
+                <p style="font-size: 0.9rem; color: #374151;"><strong>Phone:</strong> {{ sponsor.company_phone }}</p>
+                {% endif %}
+                
+                {% if sponsor.location %}
+                <p style="font-size: 0.9rem; color: #374151;"><strong>Location:</strong> {{ sponsor.location }}</p>
+                {% endif %}
+                
+                {% if sponsor.website %}
+                <p style="font-size: 0.9rem; margin-top: 4px;">
+                    <a href="{{ sponsor.website }}" target="_blank" style="color: #2563eb; text-decoration: none;">🌐 Visit Website</a>
+                </p>
+                {% endif %}
+                
+                {% if sponsor.description %}
+                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem;">{{ sponsor.description|truncatewords:20 }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; color: #6b7280;">No sponsor companies found.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+
