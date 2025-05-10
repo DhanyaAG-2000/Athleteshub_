@@ -1,4 +1,4 @@
-from decouple import config
+
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import authenticate, login,logout
@@ -7,13 +7,15 @@ from .forms import LoginForm
 from atheletes.models import Users   # Import Profile model
 from django.contrib import messages
 from django.conf import settings
-from authentication.utility import send_password_reset_email, validate_reset_token
 
-from django.core.mail import send_mail
-from .utility import generate_password_reset_link
+import random
+
+from django.utils import timezone
+
+import threading
+from datetime import timedelta
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-
-
 
 
 class LoginView(View):
@@ -63,77 +65,135 @@ class LogoutView(View):
     
 
 
-class ForgotPasswordView(View):
-    template_name = "password_reset/password_reset.html"
 
+
+    
+
+    
+  
+
+class ForgotPasswordView(View):
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, 'password_reset/forgot-password.html')
+    
+    def post(self, request):
+        email = request.POST.get('email')
+
+        try:
+            user = Users.objects.get(email=email, active_status=True)
+
+            otp = random.randint(100000, 999999)
+
+            request.session['reset_email'] = email
+            request.session['reset_otp'] = otp
+            request.session['otp_expiry'] = (timezone.now() + timedelta(minutes=5)).timestamp()
+
+            subject = 'Password Reset OTP'
+            context = {
+                'name': f"{user.first_name} {user.last_name}",
+                'otp': otp,
+            }
+
+            html_content = render_to_string('emails/password-reset-otp.html', context)
+            plain_content = (
+                f"Hi {user.first_name},\n\n"
+                f"Your OTP for password reset is: {otp}\n"
+                f"This OTP is valid for 5 minutes.\n\n"
+                f"Regards,\nAthletesHub Team"
+            )
+
+            email_message = EmailMultiAlternatives(
+                subject=subject,
+                body=plain_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[email]
+            )
+            email_message.attach_alternative(html_content, "text/html")
+            email_message.send()
+
+            messages.success(request, 'An OTP has been sent to your email. Please check your inbox.')
+            return redirect('verify-otp')
+
+        except Users.DoesNotExist:
+            messages.error(request, 'No account found with this email.')
+            return render(request, 'password_reset/forgot-password.html')
+
+
+class OTPVerificationView(View):
+    def get(self, request):
+        return render(request, 'password_reset/verify-otp.html')
 
     def post(self, request):
-        email = request.POST.get("email")
+        entered_otp = request.POST.get('otp')
+        reset_email = request.session.get('reset_email')
+        session_otp = request.session.get('reset_otp')
+        otp_expiry = request.session.get('otp_expiry')
+
+        if not (reset_email and session_otp and otp_expiry):
+            messages.error(request, 'Session expired. Please try again.')
+            return redirect('forgot-password')
+
+        if timezone.now().timestamp() > otp_expiry:
+            messages.error(request, 'OTP expired. Please request again.')
+            return redirect('forgot-password')
+
+        if int(entered_otp) == int(session_otp):
+            return redirect('reset-password')
+        else:
+            messages.error(request, 'Invalid OTP. Please try again.')
+            return render(request, 'password_reset/verify-otp.html')
+
+
+class ResetPasswordView(View):
+    def get(self, request):
+        return render(request, 'password_reset/reset-password.html')
+
+    def post(self, request):
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'password_reset/reset-password.html')
+
+        reset_email = request.session.get('reset_email')
+
+        if not reset_email:
+            messages.error(request, 'Session expired. Please try again.')
+            return redirect('forgot-password')
+
         try:
-            user = Users.objects.get(email=email)
+            user = Users.objects.get(email=reset_email, active_status=True)
+            profile = user.profile
+            profile.set_password(password)
+            profile.save()
 
-            # ✅ Ensure last_login exists
-            if not hasattr(user, "last_login"):
-                user.last_login = None  
+            subject = 'Password Changed Successfully'
+            context = {'name': user.first_name}
 
-            # ✅ Ensure password exists
-            if not hasattr(user, "password"):  
-                user.password = ""  # Set a default empty password if missing
+            html_content = render_to_string('emails/password-changed-confirmation.html', context)
+            plain_content = (
+                f"Hi {user.first_name},\n\n"
+                f"Your password has been successfully changed.\n"
+                f"If this wasn't you, please contact support immediately.\n\n"
+                f"Regards,\nAthletesHub Team"
+            )
 
-            send_password_reset_email(user)
-            messages.success(request, "Password reset link has been sent to your email.")
+            email_message = EmailMultiAlternatives(
+                subject=subject,
+                body=plain_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[reset_email]
+            )
+            email_message.attach_alternative(html_content, "text/html")
+            email_message.send()
+
+            request.session.flush()
+
+            messages.success(request, 'Password reset successfully! Please login.')
+            return redirect('login')
+
         except Users.DoesNotExist:
-            messages.error(request, "No account found with this email.")
+            messages.error(request, 'Something went wrong. Please try again.')
+            return redirect('forgot-password')
 
-        return redirect("password_reset")  # ✅ Fixed redirect
-
-class ConfirmPasswordResetView(View):
-    template_name = "password_reset/password_reset_confirm.html"
-
-    def get(self, request, uidb64, token):
-        user = validate_reset_token(uidb64, token)
-        if user:
-            return render(request, self.template_name, {"uidb64": uidb64, "token": token})
-        messages.error(request, "Invalid or expired reset link.")
-        return redirect("password_reset")  #  Fixed redirect
-
-    def post(self, request, uidb64, token):
-        password = request.POST.get("password")
-        user = validate_reset_token(uidb64, token)
-        if user:
-            user.set_password(password)
-            user.save()
-            messages.success(request, "Your password has been updated successfully.")
-            return redirect("login")  #  Fixed redirect
-
-        messages.error(request, "Invalid or expired reset link.")
-        return redirect("password_reset")
-
-
-
-def send_password_reset_email(request, user):
-    user=Users.objects.get('email')
-    reset_link = generate_password_reset_link(user)
-    message = render_to_string('reset_password_email.html', {
-    'reset_link': reset_link
-    })
-
-    send_mail(
-        subject="Reset Your Password",
-        message="Please view this email in HTML format.",
-        from_email=config('EMAIL_HOST_USER'),
-        recipient_list=[user.email],
-        html_message=message
-         )
-
-      
-
-
-    
-
-    
-
-
-    

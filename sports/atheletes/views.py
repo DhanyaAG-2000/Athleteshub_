@@ -253,3 +253,8 @@ class UserDeleteView(View):
         email.send()
 
         return redirect('user-management')
+
+
+
+
+        
